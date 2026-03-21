@@ -18,20 +18,16 @@ export interface TimesheetRow {
  * Returns distances in meters where splits should be recorded
  */
 function getSplitMarkers(raceDistance: RaceDistance): number[] {
-  // Define split points as percentages that scale with distance
-  const percentages = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+  const markerMap: Record<RaceDistance, number[]> = {
+    50: [15, 20, 25, 30, 35, 40, 45, 50],
+    100: [15, 35, 50, 70, 85, 100],
+    200: [15, 50, 75, 100, 125, 150, 175, 200],
+    400: [25, 50, 100, 150, 200, 250, 300, 350, 375, 400],
+    800: [50, 100, 200, 300, 400, 500, 600, 700, 750, 800],
+    1500: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500],
+  };
 
-  const markers = percentages.map(p => {
-    const distance = raceDistance * p;
-    // Round to nearest 5m for cleaner numbers
-    return Math.round(distance / 5) * 5;
-  });
-
-  // Ensure last marker is exactly the race distance
-  markers[markers.length - 1] = raceDistance;
-
-  // Remove duplicates and return unique sorted values
-  return [...new Set(markers)].sort((a, b) => a - b);
+  return markerMap[raceDistance];
 }
 
 /**
@@ -149,17 +145,40 @@ export function formatTime(seconds: number): string {
 }
 
 /**
+ * Format time for input display (MM:SS for times >= 60s, SS.S otherwise)
+ */
+export function formatTimeForInput(seconds: number): string {
+  if (seconds >= 60) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+  return seconds.toFixed(1);
+}
+
+/**
+ * Parse time from string input (accepts MM:SS or seconds)
+ */
+export function parseTimeInput(input: string): number {
+  if (input.includes(':')) {
+    const [mins, secs] = input.split(':').map(Number);
+    return mins * 60 + (secs || 0);
+  }
+  return Number(input);
+}
+
+/**
  * Get default time range for a given race distance
  * Returns [startTime, endTime] in seconds
  */
 export function getDefaultTimeRange(raceDistance: RaceDistance): [number, number] {
   const ranges: Record<RaceDistance, [number, number]> = {
-    50: [20, 27],
-    100: [45, 60],
-    200: [100, 135],
-    400: [210, 280],
-    800: [450, 600],
-    1500: [900, 1200],
+    50: [20, 27],           // 20s to 27s
+    100: [45, 60],          // 45s to 1:00
+    200: [105, 150],        // 1:45 to 2:30
+    400: [240, 300],        // 4:00 to 5:00
+    800: [480, 600],        // 8:00 to 10:00
+    1500: [900, 1080],      // 15:00 to 18:00
   };
 
   return ranges[raceDistance];

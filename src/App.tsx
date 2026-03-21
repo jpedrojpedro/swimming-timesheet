@@ -1,7 +1,13 @@
 import { useState, useMemo } from 'react';
 import './App.css';
 import type { RaceDistance, SwimStyle, PaceType } from './utils/paceCalculator';
-import { generateTimesheet, formatTime, getDefaultTimeRange } from './utils/paceCalculator';
+import {
+  generateTimesheet,
+  formatTime,
+  getDefaultTimeRange,
+  formatTimeForInput,
+  parseTimeInput
+} from './utils/paceCalculator';
 import { exportToCSV, exportToExcel, exportToPDF } from './utils/exporters';
 
 function App() {
@@ -92,29 +98,33 @@ function App() {
         </div>
 
         <div className="control-group">
-          <label htmlFor="start-time">Start Time (s):</label>
+          <label htmlFor="start-time">
+            Start Time {raceDistance >= 200 ? '(MM:SS)' : '(seconds)'}:
+          </label>
           <input
             id="start-time"
-            type="number"
-            step="0.1"
-            value={startTime}
-            onChange={(e) => setStartTime(Number(e.target.value))}
+            type="text"
+            value={formatTimeForInput(startTime)}
+            onChange={(e) => setStartTime(parseTimeInput(e.target.value))}
+            placeholder={raceDistance >= 200 ? "1:45" : "20.0"}
           />
         </div>
 
         <div className="control-group">
-          <label htmlFor="end-time">End Time (s):</label>
+          <label htmlFor="end-time">
+            End Time {raceDistance >= 200 ? '(MM:SS)' : '(seconds)'}:
+          </label>
           <input
             id="end-time"
-            type="number"
-            step="0.1"
-            value={endTime}
-            onChange={(e) => setEndTime(Number(e.target.value))}
+            type="text"
+            value={formatTimeForInput(endTime)}
+            onChange={(e) => setEndTime(parseTimeInput(e.target.value))}
+            placeholder={raceDistance >= 200 ? "2:30" : "27.0"}
           />
         </div>
 
         <div className="control-group">
-          <label htmlFor="step">Step (s):</label>
+          <label htmlFor="step">Step (seconds):</label>
           <input
             id="step"
             type="number"
