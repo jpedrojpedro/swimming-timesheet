@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import './App.css';
-import type { RaceDistance, SwimStyle, PaceType } from './utils/paceCalculator';
+// import type { RaceDistance, SwimStyle, PaceType } from './utils/paceCalculator';
+import type { RaceDistance, PaceType } from './utils/paceCalculator';
 import {
   generateTimesheet,
   formatTime,
@@ -13,7 +14,7 @@ import AdBanner from './components/AdBanner';
 
 function App() {
   const [raceDistance, setRaceDistance] = useState<RaceDistance>(50);
-  const [swimStyle, setSwimStyle] = useState<SwimStyle>('Freestyle');
+  {/* const [swimStyle, setSwimStyle] = useState<SwimStyle>('Freestyle'); */}
   const [paceType, setPaceType] = useState<PaceType>('average');
 
   const defaultRange = getDefaultTimeRange(raceDistance);
@@ -47,7 +48,7 @@ function App() {
       <AdBanner />
 
       <header>
-        <h1>Swimming Pace Calculator</h1>
+        <h1>Race Pace Calculator</h1>
         <p>Calculate target split times for training</p>
       </header>
 
@@ -68,6 +69,7 @@ function App() {
           </select>
         </div>
 
+        {/*
         <div className="control-group">
           <label htmlFor="swim-style">Swimming Style:</label>
           <select
@@ -82,6 +84,7 @@ function App() {
             <option value="IM">IM (Individual Medley)</option>
           </select>
         </div>
+        */}
 
         <div className="control-group">
           <label htmlFor="pace-type">Pace Strategy:</label>
@@ -135,13 +138,13 @@ function App() {
       </div>
 
       <div className="export-buttons">
-        <button onClick={() => exportToCSV(timesheet, raceDistance, swimStyle, paceType)}>
+        <button onClick={() => exportToCSV(timesheet, raceDistance, paceType)}>
           Export CSV
         </button>
-        <button onClick={() => exportToExcel(timesheet, raceDistance, swimStyle, paceType)}>
+        <button onClick={() => exportToExcel(timesheet, raceDistance, paceType)}>
           Export Excel
         </button>
-        <button onClick={() => exportToPDF(timesheet, raceDistance, swimStyle, paceType)}>
+        <button onClick={() => exportToPDF(timesheet, raceDistance, paceType)}>
           Export PDF
         </button>
       </div>
