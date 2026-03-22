@@ -9,6 +9,7 @@ import {
   parseTimeInput
 } from './utils/paceCalculator';
 import { exportToCSV, exportToExcel, exportToPDF } from './utils/exporters';
+import AdBanner from './components/AdBanner';
 
 function App() {
   const [raceDistance, setRaceDistance] = useState<RaceDistance>(50);
@@ -43,9 +44,7 @@ function App() {
   return (
     <div className="app">
       {/* Ad Space */}
-      <div className="ad-space">
-        <p className="ad-placeholder">Advertisement Space</p>
-      </div>
+      <AdBanner />
 
       <header>
         <h1>Swimming Pace Calculator</h1>
