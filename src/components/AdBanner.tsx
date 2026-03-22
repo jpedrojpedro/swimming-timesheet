@@ -1,18 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface AdBannerProps {
   show?: boolean;
 }
 
 export default function AdBanner({ show = true }: AdBannerProps) {
+  const adRef = useRef<HTMLModElement>(null);
+
   useEffect(() => {
-    // Load AdSense script when component mounts
-    try {
-      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-    } catch (e) {
-      console.error('AdSense error:', e);
-    }
-  }, []);
+    if (!show) return;
+
+    // Wait for next tick to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      try {
+        if (adRef.current) {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        }
+      } catch (e) {
+        console.error('AdSense error:', e);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [show]);
 
   if (!show) {
     return null;
@@ -20,8 +30,9 @@ export default function AdBanner({ show = true }: AdBannerProps) {
 
   return (
       <div className="ad-space">
-          <ins className="adsbygoogle"
-               style={{display: 'block'}}
+          <ins ref={adRef}
+               className="adsbygoogle"
+               style={{display: 'block', width: '100%'}}
                data-ad-client="ca-pub-6566652854233291"
                data-ad-slot="6414628122"
                data-ad-format="auto"
