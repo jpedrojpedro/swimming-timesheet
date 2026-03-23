@@ -25,7 +25,7 @@ export function exportToCSV(
 
   timesheet.forEach((row) => {
     const values = [
-      formatTime(row.target),
+      `${row.target[0]}% :: ${formatTime(row.target[1])}`,
       ...splitColumns.map((col) => formatTime(row.splits[col])),
     ];
     csv += values.join(',') + '\n';
@@ -61,7 +61,7 @@ export function exportToExcel(
   const headers = [`Target (${raceDistance}m)`, ...splitColumns];
 
   const data = timesheet.map((row) => [
-    formatTime(row.target),
+    `${row.target[0]}% :: ${formatTime(row.target[1])}`,
     ...splitColumns.map((col) => formatTime(row.splits[col])),
   ]);
 
@@ -117,7 +117,7 @@ export function exportToPDF(
   const headers = [[`Target (${raceDistance}m)`, ...splitColumns]];
 
   const data = timesheet.map((row) => [
-    formatTime(row.target),
+    `${row.target[0]}% :: ${formatTime(row.target[1])}`,
     ...splitColumns.map((col) => formatTime(row.splits[col])),
   ]);
 

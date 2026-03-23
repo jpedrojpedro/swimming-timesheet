@@ -166,7 +166,7 @@ function App() {
           <tbody>
             {timesheet.map((row, index) => (
               <tr key={index}>
-                <td className="target-cell">`{row.target[0]}% :: {formatTime(row.target[1])}`</td>
+                <td className="target-cell">{row.target[0]}% → {formatTime(row.target[1])}</td>
                 {splitColumns.map((col) => (
                   <td key={col}>{formatTime(row.splits[col])}</td>
                 ))}
