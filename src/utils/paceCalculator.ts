@@ -131,9 +131,12 @@ export function generateTimesheet(
   ];
 
   for (let i = 0; i < steps.length; i++) {
-    const target = Number((startTime * (1 + (1 - steps[i]))).toFixed(1));
-    const splits = calculateSplitTimes(target, raceDistance, paceType);
-    rows.push({ target, splits });
+    const rawTarget = startTime * (2 - steps[i]);
+    const splits = calculateSplitTimes(rawTarget, raceDistance, paceType);
+    rows.push({
+      target: Number(rawTarget.toFixed(1)),
+      splits: splits
+    });
   }
 
   return rows;

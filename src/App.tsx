@@ -101,7 +101,7 @@ function App() {
 
         <div className="control-group">
           <label htmlFor="start-time">
-            Start Time {raceDistance >= 200 ? '(MM:SS)' : '(seconds)'}:
+            Goal Time {raceDistance >= 200 ? '(MM:SS)' : '(seconds)'}:
           </label>
           <input
             id="start-time"
