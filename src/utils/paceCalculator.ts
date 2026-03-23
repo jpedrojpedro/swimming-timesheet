@@ -9,7 +9,7 @@ export interface SplitTimes {
 }
 
 export interface TimesheetRow {
-  target: number;
+  target: [number, number];
   splits: SplitTimes;
 }
 
@@ -134,7 +134,7 @@ export function generateTimesheet(
     const rawTarget = startTime * (2 - steps[i]);
     const splits = calculateSplitTimes(rawTarget, raceDistance, paceType);
     rows.push({
-      target: Number(rawTarget.toFixed(1)),
+      target: [steps[i] * 100, Number(rawTarget.toFixed(1))],
       splits: splits
     });
   }
