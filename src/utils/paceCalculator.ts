@@ -104,26 +104,34 @@ export function calculateSplitTimes(
 /**
  * Generate a complete timesheet with multiple target times
  * @param startTime - Starting target time in seconds
- * @param endTime - Ending target time in seconds
- * @param step - Step size in seconds
  * @param raceDistance - Race distance in meters
  * @param paceType - Type of pacing strategy
  * @returns Array of timesheet rows
  */
 export function generateTimesheet(
   startTime: number,
-  endTime: number,
-  step: number,
   raceDistance: RaceDistance,
   paceType: PaceType
 ): TimesheetRow[] {
   const rows: TimesheetRow[] = [];
+  const steps = [
+      1,
+      .99,
+      .98,
+      .95,
+      .9,
+      .85,
+      .8,
+      .75,
+      .7,
+      .65,
+      .6,
+      .55,
+      .5
+  ];
 
-  // Round to avoid floating point issues
-  const steps = Math.round((endTime - startTime) / step) + 1;
-
-  for (let i = 0; i < steps; i++) {
-    const target = Number((startTime + i * step).toFixed(1));
+  for (let i = 0; i < steps.length; i++) {
+    const target = Number((startTime * (1 + (1 - steps[i]))).toFixed(1));
     const splits = calculateSplitTimes(target, raceDistance, paceType);
     rows.push({ target, splits });
   }
@@ -175,10 +183,10 @@ export function getDefaultTimeRange(raceDistance: RaceDistance): [number, number
   const ranges: Record<RaceDistance, [number, number]> = {
     50: [20, 27],           // 20s to 27s
     100: [45, 60],          // 45s to 1:00
-    200: [105, 150],        // 1:45 to 2:30
-    400: [240, 300],        // 4:00 to 5:00
-    800: [480, 600],        // 8:00 to 10:00
-    1500: [900, 1080],      // 15:00 to 18:00
+    200: [100, 150],        // 1:40 to 2:30
+    400: [220, 300],        // 3:40 to 5:00
+    800: [440, 600],        // 7:20 to 10:00
+    1500: [870, 1080],      // 14:30 to 18:00
   };
 
   return ranges[raceDistance];

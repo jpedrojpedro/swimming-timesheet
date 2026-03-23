@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import './App.css';
-// import type { RaceDistance, SwimStyle, PaceType } from './utils/paceCalculator';
+{/* import type { RaceDistance, SwimStyle, PaceType } from './utils/paceCalculator'; */}
 import type { RaceDistance, PaceType } from './utils/paceCalculator';
 import {
   generateTimesheet,
@@ -19,20 +19,20 @@ function App() {
 
   const defaultRange = getDefaultTimeRange(raceDistance);
   const [startTime, setStartTime] = useState(defaultRange[0]);
-  const [endTime, setEndTime] = useState(defaultRange[1]);
-  const [step, setStep] = useState(0.2);
+  {/* const [endTime, setEndTime] = useState(defaultRange[1]); */}
+  {/* const [step, setStep] = useState(0.2); */}
 
   // Update time range when race distance changes
   const handleDistanceChange = (distance: RaceDistance) => {
     setRaceDistance(distance);
     const range = getDefaultTimeRange(distance);
     setStartTime(range[0]);
-    setEndTime(range[1]);
+    {/* setEndTime(range[1]); */}
   };
 
   const timesheet = useMemo(
-    () => generateTimesheet(startTime, endTime, step, raceDistance, paceType),
-    [startTime, endTime, step, raceDistance, paceType]
+    () => generateTimesheet(startTime, raceDistance, paceType),
+    [startTime, raceDistance, paceType]
   );
 
   const splitColumns = useMemo(() => {
@@ -49,7 +49,7 @@ function App() {
 
       <header>
         <h1>Race Pace Calculator</h1>
-        <p>Calculate target split times for training</p>
+        <p>Set your goal time and let the magic happen.</p>
       </header>
 
       <div className="controls">
@@ -112,6 +112,7 @@ function App() {
           />
         </div>
 
+        {/*
         <div className="control-group">
           <label htmlFor="end-time">
             End Time {raceDistance >= 200 ? '(MM:SS)' : '(seconds)'}:
@@ -124,7 +125,9 @@ function App() {
             placeholder={raceDistance >= 200 ? "2:30" : "27.0"}
           />
         </div>
+        */}
 
+        {/*
         <div className="control-group">
           <label htmlFor="step">Step (seconds):</label>
           <input
@@ -135,6 +138,7 @@ function App() {
             onChange={(e) => setStep(Number(e.target.value))}
           />
         </div>
+        */}
       </div>
 
       <div className="export-buttons">
